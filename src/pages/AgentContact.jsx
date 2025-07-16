@@ -4,27 +4,24 @@ const AgentContact = () => {
   const agents = [
     {
       id: 1,
-      name: "John Doe",
+      name: "Mr Semilore",
       position: "Senior Property Agent",
-      phone: "+234 803 123 4567",
-      email: "john.doe@alowoloko.com",
-      area: "Ogara Central District",
+      phone: "+234 803 491 4580",
+      email: "semilorealowoloko@gmail.com",
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Mr Omotayo",
       position: "Land Acquisition Specialist",
-      phone: "+234 805 765 4321",
-      email: "jane.smith@alowoloko.com",
-      area: "Northern Ogara Region",
+      phone: "+234 706 788 5054",
+      email: "omotayoalowoloko@gmail.com",
     },
     {
       id: 3,
-      name: "Michael Johnson",
+      name: "Baba Oyo",
       position: "Property Valuation Expert",
-      phone: "+234 802 987 6543",
-      email: "michael.j@alowoloko.com",
-      area: "Southern Ogara Region",
+      phone: "+234 904 175 4737",
+      email: "babaoyoalowoloko@gmail.com",
     },
   ];
 
@@ -35,9 +32,9 @@ const AgentContact = () => {
 
         <div className="mb-8">
           <img
-            src="/images/agents-team.jpg"
+            src="/images/agents-team.png"
             alt="Our Property Agents"
-            className="w-full h-64 object-cover rounded-lg"
+            className="w-full h-[29rem] object-cover rounded-lg"
           />
         </div>
 
@@ -69,13 +66,6 @@ const AgentContact = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-start">
-                    <FaMapMarkerAlt className="text-orange-500 mt-1 mr-3" />
-                    <p className="text-gray-700">
-                      <span className="font-medium">Coverage Area:</span>{" "}
-                      {agent.area}
-                    </p>
-                  </div>
                   <div className="flex items-center">
                     <FaPhone className="text-orange-500 mr-3" />
                     <a

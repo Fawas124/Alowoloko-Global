@@ -7,21 +7,27 @@ const AgentContact = () => {
       name: "Mr Semilore",
       position: "Senior Property Agent",
       phone: "+234 803 491 4580",
-      email: "semilorealowoloko@gmail.com",
+      email: "akinboshemilore28@gmail.com",
     },
     {
       id: 2,
       name: "Mr Omotayo",
       position: "Land Acquisition Specialist",
       phone: "+234 706 788 5054",
-      email: "omotayoalowoloko@gmail.com",
+      email: "oabiodunoluwaseun78@gmail.com",
     },
     {
       id: 3,
+      name: "Miss debby",
+      position: "Property Valuation Expert",
+      phone: "+234 904 175 4737",
+      email: "faajadebby@gmail.com",
+    },
+    {
+      id: 4,
       name: "Baba Oyo",
       position: "Property Valuation Expert",
       phone: "+234 904 175 4737",
-      email: "babaoyoalowoloko@gmail.com",
     },
   ];
 

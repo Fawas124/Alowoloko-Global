@@ -30,11 +30,29 @@ const Header = () => {
   const handleEmailClick = (e) => {
     e.preventDefault();
     setIsOpen(false);
-    window.open(
-      "https://mail.google.com/mail/?view=cm&fs=1&to=alowolokoglobalcompany@gmail.com&su=Inquiry from Alowoloko Website&body=Dear Alowoloko Global Team,",
-      "_blank",
-      "noopener,noreferrer"
-    );
+    
+    // Check if user is on mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Try to open Gmail app first
+      const gmailAppUrl = `googlegmail:///co?to=alowolokoglobalcompany@gmail.com&subject=Inquiry from Alowoloko Website&body=Dear Alowoloko Global Team,`;
+      
+      // Open the Gmail app URL (will fall back to website if app not installed)
+      window.location.href = gmailAppUrl;
+      
+      // Fallback to Gmail website after a short delay if app doesn't open
+      setTimeout(() => {
+        if (!document.hidden) {
+          const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=alowolokoglobalcompany@gmail.com&su=Inquiry from Alowoloko Website&body=Dear Alowoloko Global Team,`;
+          window.open(gmailWebUrl, '_blank', 'noopener,noreferrer');
+        }
+      }, 500);
+    } else {
+      // For desktop, just open Gmail website
+      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=alowolokoglobalcompany@gmail.com&su=Inquiry from Alowoloko Website&body=Dear Alowoloko Global Team,`;
+      window.open(gmailWebUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (

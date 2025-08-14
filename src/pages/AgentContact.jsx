@@ -18,7 +18,7 @@ const AgentContact = () => {
     },
     {
       id: 3,
-      name: "Miss debby",
+      name: "Miss Debby",
       position: "Property Valuation Expert",
       phone: "+234 904 175 4737",
       email: "faajadebby@gmail.com",
@@ -32,9 +32,41 @@ const AgentContact = () => {
   ];
 
   const handleEmailClick = (email) => {
-    // Directly open Gmail compose window with pre-filled details
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
-    window.open(gmailUrl, '_blank');
+    // Check if user is on mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Try to open Gmail app first
+      const gmailAppUrl = `googlegmail:///co?to=${email}&subject=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
+      
+      // Open the Gmail app URL (will fall back to website if app not installed)
+      window.location.href = gmailAppUrl;
+      
+      // Fallback to Gmail website after a short delay if app doesn't open
+      setTimeout(() => {
+        if (!document.hidden) {
+          const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
+          window.open(gmailWebUrl, '_blank');
+        }
+      }, 500);
+    } else {
+      // For desktop, just open Gmail website
+      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
+      window.open(gmailWebUrl, '_blank');
+    }
+  };
+
+  const handlePhoneClick = (phoneNumber) => {
+    // Check if user is on mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Try to open phone dialer
+      window.location.href = `tel:${phoneNumber}`;
+    } else {
+      // For desktop, show the phone number
+      alert(`Please call: ${phoneNumber}`);
+    }
   };
 
   return (
@@ -78,22 +110,24 @@ const AgentContact = () => {
                 <div className="space-y-3">
                   <div className="flex items-center">
                     <FaPhone className="text-orange-500 mr-3" />
-                    <a
-                      href={`tel:${agent.phone}`}
-                      className="text-gray-700 hover:text-orange-500"
-                    >
-                      {agent.phone}
-                    </a>
-                  </div>
-                  <div className="flex items-center">
-                    <FaEnvelope className="text-orange-500 mr-3" />
                     <button
-                      onClick={() => handleEmailClick(agent.email)}
+                      onClick={() => handlePhoneClick(agent.phone)}
                       className="text-gray-700 hover:text-orange-500 text-left hover:underline"
                     >
-                      {agent.email}
+                      {agent.phone}
                     </button>
                   </div>
+                  {agent.email && (
+                    <div className="flex items-center">
+                      <FaEnvelope className="text-orange-500 mr-3" />
+                      <button
+                        onClick={() => handleEmailClick(agent.email)}
+                        className="text-gray-700 hover:text-orange-500 text-left hover:underline"
+                      >
+                        {agent.email}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -107,12 +141,12 @@ const AgentContact = () => {
               For general questions, please contact our main office.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="tel:+2348038105698"
+              <button
+                onClick={() => handlePhoneClick("+2348038105698")}
                 className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded text-center flex items-center justify-center"
               >
                 <FaPhone className="mr-2" /> Call Office
-              </a>
+              </button>
 
               <button
                 onClick={() => handleEmailClick("alowolokoglobalcompany@gmail.com")}

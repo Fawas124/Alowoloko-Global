@@ -31,28 +31,48 @@ const Header = () => {
     e.preventDefault();
     setIsOpen(false);
     
-    // Check if user is on mobile device
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const email = "alowolokoglobalcompany@gmail.com";
+    const subject = "Inquiry from Alowoloko Website";
+    const body = "Dear Alowoloko Global Team,";
+
+    // First try the standard mailto link
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
-    if (isMobile) {
-      // Try to open Gmail app first
-      const gmailAppUrl = `googlegmail:///co?to=alowolokoglobalcompany@gmail.com&subject=Inquiry from Alowoloko Website&body=Dear Alowoloko Global Team,`;
-      
-      // Open the Gmail app URL (will fall back to website if app not installed)
-      window.location.href = gmailAppUrl;
-      
-      // Fallback to Gmail website after a short delay if app doesn't open
-      setTimeout(() => {
-        if (!document.hidden) {
-          const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=alowolokoglobalcompany@gmail.com&su=Inquiry from Alowoloko Website&body=Dear Alowoloko Global Team,`;
-          window.open(gmailWebUrl, '_blank', 'noopener,noreferrer');
+    // If that doesn't work (still on same page after delay), try platform-specific approaches
+    setTimeout(() => {
+      if (!document.hidden) {
+        // Check if Android
+        if (/Android/i.test(navigator.userAgent)) {
+          // Android intent URL
+          const androidIntent = `intent://send?to=${email}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}#Intent;scheme=googlegmail;package=com.google.android.gm;end`;
+          window.location.href = androidIntent;
+        } 
+        // Check if iOS
+        else if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          // iOS Gmail URL scheme
+          const iosGmailUrl = `googlegmail:///co?to=${email}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+          window.location.href = iosGmailUrl;
+          
+          // If Gmail app not installed, try Apple Mail
+          setTimeout(() => {
+            if (!document.hidden) {
+              window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            }
+          }, 200);
         }
-      }, 500);
-    } else {
-      // For desktop, just open Gmail website
-      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=alowolokoglobalcompany@gmail.com&su=Inquiry from Alowoloko Website&body=Dear Alowoloko Global Team,`;
-      window.open(gmailWebUrl, '_blank', 'noopener,noreferrer');
-    }
+        
+        // Final fallback to Gmail web
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.open(
+              `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+              '_blank',
+              'noopener,noreferrer'
+            );
+          }
+        }, 400);
+      }
+    }, 300);
   };
 
   return (

@@ -32,41 +32,42 @@ const AgentContact = () => {
   ];
 
   const handleEmailClick = (email) => {
-    // Check if user is on mobile device
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // First try to open native email app
+    const mailtoLink = `mailto:${email}?subject=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
+    window.location.href = mailtoLink;
     
-    if (isMobile) {
-      // Try to open Gmail app first
-      const gmailAppUrl = `googlegmail:///co?to=${email}&subject=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
-      
-      // Open the Gmail app URL (will fall back to website if app not installed)
-      window.location.href = gmailAppUrl;
-      
-      // Fallback to Gmail website after a short delay if app doesn't open
-      setTimeout(() => {
-        if (!document.hidden) {
-          const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
-          window.open(gmailWebUrl, '_blank');
-        }
-      }, 500);
-    } else {
-      // For desktop, just open Gmail website
-      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
-      window.open(gmailWebUrl, '_blank');
-    }
+    // If that fails (or on Android), try Gmail app directly after a delay
+    setTimeout(() => {
+      // Check if we're still on the same page (meaning mailto didn't work)
+      if (!document.hidden) {
+        const gmailAppUrl = `intent://send?to=${email}&subject=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...#Intent;scheme=googlegmail;package=com.google.android.gm;end`;
+        
+        // For iOS
+        const gmailIosUrl = `googlegmail:///co?to=${email}&subject=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
+        
+        // Try Android intent first
+        window.location.href = gmailAppUrl;
+        
+        // If that fails, try iOS URL
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.href = gmailIosUrl;
+            
+            // Final fallback to Gmail web
+            setTimeout(() => {
+              if (!document.hidden) {
+                const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Property Inquiry&body=Hello,%0D%0A%0D%0AI would like to inquire about...`;
+                window.open(gmailWebUrl, '_blank');
+              }
+            }, 200);
+          }
+        }, 200);
+      }
+    }, 300);
   };
 
   const handlePhoneClick = (phoneNumber) => {
-    // Check if user is on mobile device
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-      // Try to open phone dialer
-      window.location.href = `tel:${phoneNumber}`;
-    } else {
-      // For desktop, show the phone number
-      alert(`Please call: ${phoneNumber}`);
-    }
+    window.location.href = `tel:${phoneNumber}`;
   };
 
   return (
